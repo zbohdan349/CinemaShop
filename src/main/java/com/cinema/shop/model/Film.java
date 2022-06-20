@@ -1,12 +1,36 @@
 package com.cinema.shop.model;
 
-public class Film {
 
+
+import javax.persistence.*;
+import java.math.BigDecimal;
+import java.time.Year;
+
+
+@Entity
+public class Film {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "film_id")
     private Integer id;
 
     private String title;
 
-    private String Description;
+    private String description;
+
+    @ManyToOne
+    @JoinColumn(name = "language_id")
+    private Language language;
+
+    @Column(name = "release_year")
+    private Integer year;
+
+    @Column(name = "rental_rate")
+    private BigDecimal rentalRate;
+
+    @Column(name = "replacement_cost")
+    private BigDecimal buyRate;
+
 
     public Film() {
     }
@@ -14,7 +38,7 @@ public class Film {
     public Film(Integer id, String title, String description) {
         this.id = id;
         this.title = title;
-        Description = description;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -34,11 +58,43 @@ public class Film {
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
     public void setDescription(String description) {
-        Description = description;
+        this.description = description;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
+    }
+
+    public Integer getYear() {
+        return year;
+    }
+
+    public void setYear(Integer year) {
+        this.year = year;
+    }
+
+    public BigDecimal getRentalRate() {
+        return rentalRate;
+    }
+
+    public void setRentalRate(BigDecimal rentalRate) {
+        this.rentalRate = rentalRate;
+    }
+
+    public BigDecimal getBuyRate() {
+        return buyRate;
+    }
+
+    public void setBuyRate(BigDecimal buyRate) {
+        this.buyRate = buyRate;
     }
 
     @Override
@@ -46,7 +102,7 @@ public class Film {
         return "Film{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", Description='" + Description + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }
