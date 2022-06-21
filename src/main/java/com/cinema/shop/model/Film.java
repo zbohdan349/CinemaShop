@@ -1,10 +1,7 @@
 package com.cinema.shop.model;
 
-
-
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.Year;
 import java.util.Set;
 
 
@@ -31,6 +28,9 @@ public class Film {
 
     @Column(name = "replacement_cost")
     private BigDecimal buyRate;
+
+    @Enumerated(EnumType.STRING)
+    private Rating rating;
 
     @ManyToMany(cascade = { CascadeType.ALL })
     @JoinTable(
@@ -104,6 +104,14 @@ public class Film {
 
     public void setBuyRate(BigDecimal buyRate) {
         this.buyRate = buyRate;
+    }
+
+    public Rating getRating() {
+        return rating;
+    }
+
+    public void setRating(Rating rating) {
+        this.rating = rating;
     }
 
     public Set<Category> getCategories() {
