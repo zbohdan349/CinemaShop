@@ -8,6 +8,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -19,14 +20,15 @@ public class FilmController {
 
 
     @GetMapping("/films")
-    public List<Film> getFilms(@RequestParam Integer page){
+    public Map<String, Object> getFilms(@RequestParam Integer page) throws Exception {
 
         return filmService.getAllPageable(page);
 
     }
 
     @GetMapping("/films/{id}")
-    public Optional<Film> getFilmById(@PathVariable Integer id){
+    public Film getFilmById(@PathVariable Integer id){
+
 
         return filmService.getFilmById(id);
     }

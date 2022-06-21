@@ -8,5 +8,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import java.util.List;
 
 public interface FilmRepository extends PagingAndSortingRepository<Film,Integer> {
+    Page<Film> findAll(Pageable pageable);
 
 }
