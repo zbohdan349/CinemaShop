@@ -1,49 +1,33 @@
-package com.cinema.shop.model;
+package com.cinema.shop.model.dto;
 
-import javax.persistence.*;
+import com.cinema.shop.model.Category;
+import com.cinema.shop.model.Language;
+import com.cinema.shop.model.Rating;
+
 import java.math.BigDecimal;
 import java.util.Set;
 
 
-@Entity
-public class Film {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "film_id")
+public class FilmDto {
     private Integer id;
 
     private String title;
 
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "language_id")
     private Language language;
 
-    @Column(name = "release_year")
     private Integer year;
 
-    @Column(name = "rental_rate")
     private BigDecimal rentalRate;
 
-    @Column(name = "replacement_cost")
     private BigDecimal buyRate;
 
-    @Enumerated(EnumType.STRING)
     private Rating rating;
 
-    @Column(name = "special_features")
-    private String features;
-
-    @ManyToMany(cascade = { CascadeType.ALL })
-    @JoinTable(
-            name = "film_category",
-            joinColumns = { @JoinColumn(name = "film_id") },
-            inverseJoinColumns = { @JoinColumn(name = "category_id") }
-    )
     private Set<Category> categories;
 
-    public Film() {
+    public FilmDto() {
     }
 
     public Integer getId() {
@@ -116,22 +100,5 @@ public class Film {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
-    }
-
-    public String getFeatures() {
-        return features;
-    }
-
-    public void setFeatures(String features) {
-        this.features = features;
-    }
-
-    @Override
-    public String toString() {
-        return "Film{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                '}';
     }
 }

@@ -2,6 +2,7 @@ package com.cinema.shop.servise;
 
 import com.cinema.shop.exception.NotFoundException;
 import com.cinema.shop.model.Film;
+import com.cinema.shop.model.dto.FilmDto;
 import com.cinema.shop.repository.FilmRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -9,7 +10,10 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
@@ -35,9 +39,24 @@ public class FilmService {
         Map<String,Object> filmMap =new HashMap<>();
         filmMap.put("Count of pages",films.getTotalPages());
         filmMap.put("Count of elements", films.getTotalElements());
-        filmMap.put("Films",films.toList());
+        filmMap.put("Films",convert(films.toList()));
         return filmMap;
     }
 
-
+    private List<FilmDto> convert(List<Film> films){
+        Function<Film, FilmDto> change = film -> {
+            FilmDto dto = new FilmDto();
+            dto.setBuyRate(film.getBuyRate());
+            dto.setCategories(film.getCategories());
+            dto.setId(film.getId());
+            dto.setLanguage(film.getLanguage());
+            dto.setDescription(film.getDescription());
+            dto.setTitle(film.getTitle());
+            dto.setYear(film.getYear());
+            dto.setRentalRate(film.getRentalRate());
+            dto.setRating(film.getRating());
+            return dto;
+        };
+        return films.stream().map(change).collect(Collectors.toList());
+    }
 }
