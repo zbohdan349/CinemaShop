@@ -43,6 +43,15 @@ public class Film {
     )
     private Set<Category> categories;
 
+    @ManyToMany(cascade = { CascadeType.ALL })
+    @JoinTable(
+            name = "film_actor",
+            joinColumns = { @JoinColumn(name = "actor_id") },
+            inverseJoinColumns = { @JoinColumn(name = "film_id") }
+    )
+    private Set<Actor> actors;
+
+
     public Film() {
     }
 
@@ -124,6 +133,14 @@ public class Film {
 
     public void setFeatures(String features) {
         this.features = features;
+    }
+
+    public Set<Actor> getActors() {
+        return actors;
+    }
+
+    public void setActors(Set<Actor> actors) {
+        this.actors = actors;
     }
 
     @Override

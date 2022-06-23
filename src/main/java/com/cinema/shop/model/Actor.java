@@ -6,26 +6,23 @@ import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class Category {
-
+public class Actor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "category_id")
+    @Column(name = "actor_id")
     private Integer id;
 
-    private String name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "categories",fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "actors",fetch = FetchType.LAZY)
     private Set<Film> films;
 
-
-    public Category() {
-    }
-
-    public Category(Integer id, String name) {
-        this.id = id;
-        this.name = name;
+    public Actor() {
     }
 
     public Integer getId() {
@@ -36,12 +33,20 @@ public class Category {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Set<Film> getFilms() {
