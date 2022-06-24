@@ -2,8 +2,11 @@ package com.cinema.shop.servise;
 
 import com.cinema.shop.exception.NotFoundException;
 import com.cinema.shop.model.Film;
+import com.cinema.shop.model.Rating;
 import com.cinema.shop.model.dto.FilmDto;
+import com.cinema.shop.repository.CategoryRepository;
 import com.cinema.shop.repository.FilmRepository;
+import com.cinema.shop.repository.LanguageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,11 +20,13 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
-
     private final int COUNT_OF_ELEMENTS_ON_PAGE = 20;
     @Autowired
+    private CategoryRepository categoryRepository;
+    @Autowired
+    private LanguageRepository languageRepository;
+    @Autowired
     private FilmRepository filmRepository;
-
     public Film getFilmById(Integer id){
       Film film = filmRepository.findById(id).orElseThrow(
               ()-> new NotFoundException("Film with ID: "+ id + " not found"));
@@ -42,6 +47,17 @@ public class FilmService {
         filmMap.put("Films",convert(films.toList()));
         return filmMap;
     }
+    public Map<String,Object> getFilterCategories(){
+        Map<String,Object> filterCategoryMap =new HashMap<>();
+        filterCategoryMap.put("Languages",languageRepository.findAll());
+        filterCategoryMap.put("Rating", Rating.values());
+        filterCategoryMap.put("Categories",categoryRepository.findAll());
+        filterCategoryMap.put("Max price",filmRepository.findMaxPrice());
+        filterCategoryMap.put("Min price",filmRepository.findMinPrice());
+
+        return filterCategoryMap;
+    }
+
 
     private List<FilmDto> convert(List<Film> films){
         Function<Film, FilmDto> change = film -> {

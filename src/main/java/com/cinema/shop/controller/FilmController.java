@@ -33,5 +33,10 @@ public class FilmController {
         return filmService.getFilmById(id);
     }
 
+    @GetMapping("/filterCategories")
+    public Map<String, Object> getFilterCategories(){
+        return filmService.getFilterCategories();
+    }
+
 
 }
