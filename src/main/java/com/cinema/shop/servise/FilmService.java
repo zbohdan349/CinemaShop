@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class FilmService {
-    private final int COUNT_OF_ELEMENTS_ON_PAGE = 20;
+    private final int COUNT_OF_ELEMENTS_ON_PAGE = 21;
     @Autowired
     private CategoryRepository categoryRepository;
     @Autowired
@@ -33,19 +33,9 @@ public class FilmService {
       return film;
     }
 
-    public Map<String,Object> getAllPageable(Integer page) {
-        --page;
-        Page<Film> films = filmRepository.findAll(PageRequest.of(page,COUNT_OF_ELEMENTS_ON_PAGE));
-
-        if(films.getTotalElements()<1)throw new NotFoundException("Movies with these parameters not found");
-
-        if(films.getTotalPages()<=page)throw new NotFoundException("Incorrect page number");
-
-        Map<String,Object> filmMap =new HashMap<>();
-        filmMap.put("Count of pages",films.getTotalPages());
-        filmMap.put("Count of elements", films.getTotalElements());
-        filmMap.put("Films",convert(films.toList()));
-        return filmMap;
+    public Map<String,Object> getAllFilm(Integer page) {
+        Page<Film> films = filmRepository.findAll(PageRequest.of(--page,COUNT_OF_ELEMENTS_ON_PAGE));
+        return getPageable(films,page);
     }
     public Map<String,Object> getFilterCategories(){
         Map<String,Object> filterCategoryMap =new HashMap<>();
@@ -57,16 +47,29 @@ public class FilmService {
 
         return filterCategoryMap;
     }
+    public Map<String,Object> getFilmByTitle(String title, Integer page){
+        Page<Film> films = filmRepository.findByTitleContains(title,PageRequest.of(--page,COUNT_OF_ELEMENTS_ON_PAGE));
+        return getPageable(films,page);
+    }
 
+    private Map<String,Object> getPageable(Page<Film> films,Integer page){
+        if(films.getTotalElements()<1)throw new NotFoundException("Movies with these parameters not found");
 
-    private List<FilmDto> convert(List<Film> films){
+        if(films.getTotalPages()<=page)throw new NotFoundException("Incorrect page number");
+
+        Map<String,Object> filmMap =new HashMap<>();
+        filmMap.put("Count of pages",films.getTotalPages());
+        filmMap.put("Count of elements", films.getTotalElements());
+        filmMap.put("Films",convertToDto(films.toList()));
+        return filmMap;
+    }
+    private List<FilmDto> convertToDto(List<Film> films){
         Function<Film, FilmDto> change = film -> {
             FilmDto dto = new FilmDto();
             dto.setBuyRate(film.getBuyRate());
             dto.setCategories(film.getCategories());
             dto.setId(film.getId());
             dto.setLanguage(film.getLanguage());
-            dto.setDescription(film.getDescription());
             dto.setTitle(film.getTitle());
             dto.setYear(film.getYear());
             dto.setRentalRate(film.getRentalRate());

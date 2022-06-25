@@ -12,6 +12,8 @@ import java.util.List;
 public interface FilmRepository extends PagingAndSortingRepository<Film,Integer> {
     Page<Film> findAll(Pageable pageable);
 
+    Page<Film>findByTitleContains(String title,Pageable pageable);
+
     @Query("SELECT max(buyRate) FROM Film")
     long findMaxPrice();
 

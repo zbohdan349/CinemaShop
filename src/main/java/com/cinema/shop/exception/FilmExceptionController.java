@@ -12,8 +12,4 @@ public class FilmExceptionController {
     public ResponseEntity handleException(NotFoundException exception){
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
-    @ExceptionHandler
-    public ResponseEntity handleException(Exception exception){
-        return new ResponseEntity<>(exception.getMessage(), HttpStatus.BAD_REQUEST);
-    }
 }

@@ -13,8 +13,6 @@ public class FilmDto {
 
     private String title;
 
-    private String description;
-
     private Language language;
 
     private Integer year;
@@ -44,14 +42,6 @@ public class FilmDto {
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public Language getLanguage() {
