@@ -66,15 +66,8 @@ public class FilmService {
     private List<FilmDto> convertToDto(List<Film> films){
         Function<Film, FilmDto> change = film -> {
             FilmDto dto = new FilmDto();
-            dto.setBuyRate(film.getBuyRate());
-            dto.setCategories(film.getCategories());
-            dto.setId(film.getId());
-            dto.setLanguage(film.getLanguage());
-            dto.setTitle(film.getTitle());
-            dto.setYear(film.getYear());
-            dto.setRentalRate(film.getRentalRate());
-            dto.setRating(film.getRating());
-            return dto;
+
+            return (FilmDto) MappingUtils.map(dto,film);
         };
         return films.stream().map(change).collect(Collectors.toList());
     }
