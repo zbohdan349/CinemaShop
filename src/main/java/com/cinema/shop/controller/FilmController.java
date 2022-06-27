@@ -5,6 +5,7 @@ import com.cinema.shop.servise.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @CrossOrigin(origins = "http://localhost:3000")
@@ -16,7 +17,11 @@ public class FilmController {
 
     @GetMapping("/films")
     public Map<String, Object> getFilms(@RequestParam Integer page) throws Exception {
-        return filmService.getAllFilm(page);
+        return filmService.getAllFilms(page);
+    }
+    @GetMapping("/films/filtered")
+    public Map<String, Object> getFilteredFilms(@RequestParam Integer page) throws Exception {
+        return filmService.getFilteredFilms(page);
     }
 
     @GetMapping("/films/{id}")
@@ -27,6 +32,10 @@ public class FilmController {
     @GetMapping("/films/title/{title}")
     public Map<String, Object> getFilmByTitle(@PathVariable String title,@RequestParam Integer page){
         return filmService.getFilmByTitle(title,page);
+    }
+    @GetMapping("/films/smallInfo/{title}")
+    public List<String> getFilmSmallInfoByTitle(@PathVariable String title){
+        return filmService.getFilmDtoByTitle(title);
     }
 
     @GetMapping("/filterCategories")
