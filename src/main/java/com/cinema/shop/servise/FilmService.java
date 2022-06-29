@@ -1,11 +1,10 @@
 package com.cinema.shop.servise;
 
 import com.cinema.shop.exception.NotFoundException;
-import com.cinema.shop.model.Category;
 import com.cinema.shop.model.Film;
-import com.cinema.shop.model.Language;
 import com.cinema.shop.model.Rating;
 import com.cinema.shop.model.dto.FilmDto;
+import com.cinema.shop.model.requestData.FilterRequest;
 import com.cinema.shop.repository.CategoryRepository;
 import com.cinema.shop.repository.FilmRepository;
 import com.cinema.shop.repository.LanguageRepository;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,18 +38,18 @@ public class FilmService {
         Page<Film> films = filmRepository.findAll(PageRequest.of(--page,COUNT_OF_ELEMENTS_ON_PAGE));
         return getPageable(films,page);
     }
-    public Map<String,Object> getFilteredFilms(Integer page) {
-        Set<Language> languages=new HashSet<>();
-        languages.add(new Language(1,"English"));
-        Set<Category> categories=new HashSet<>();
-        categories.add(new Category(1,"Drama"));
-        categories.add(new Category(7,"Drama"));
-        categories.add(new Category(9,"Foreign"));
+    public Map<String,Object> getFilteredFilms(FilterRequest request,Integer page) {
+        if(request.getCategories().isEmpty())request.setCategories(categoryRepository.findAll());
+        if(request.getLanguages().isEmpty())request.setLanguages(languageRepository.findAll());
+        if(request.getRatings().isEmpty())request.setRatings(Arrays.stream(Rating.values()).collect(Collectors.toList()));
+        if(request.getMax()==0)request.setMax(filmRepository.findMaxPrice());
 
-        Page<Film> films = filmRepository.findByCategoriesInAndLanguageInAndRatingIn(
-                categories,
-                languages,
-                Arrays.asList(Rating.PG,Rating.PG13),
+        Page<Film> films = filmRepository.findByCategoriesInAndLanguageInAndRatingInAndBuyRateBetween(
+                request.getCategories(),
+                request.getLanguages(),
+                request.getRatings(),
+                BigDecimal.valueOf(request.getMin()),
+                BigDecimal.valueOf(request.getMax()),
                 PageRequest.of(--page,
                                 COUNT_OF_ELEMENTS_ON_PAGE,
                                 Sort.by("title")));
@@ -92,4 +92,5 @@ public class FilmService {
         };
         return films.stream().map(change).collect(Collectors.toList());
     }
+
 }

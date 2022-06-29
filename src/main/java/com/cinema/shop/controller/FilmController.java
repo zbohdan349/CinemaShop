@@ -1,6 +1,7 @@
 package com.cinema.shop.controller;
 
 import com.cinema.shop.model.Film;
+import com.cinema.shop.model.requestData.FilterRequest;
 import com.cinema.shop.servise.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,9 @@ public class FilmController {
     public Map<String, Object> getFilms(@RequestParam Integer page) throws Exception {
         return filmService.getAllFilms(page);
     }
-    @GetMapping("/films/filtered")
-    public Map<String, Object> getFilteredFilms(@RequestParam Integer page) throws Exception {
-        return filmService.getFilteredFilms(page);
+    @PostMapping("/films/filtered")
+    public Map<String, Object> getFilteredFilms(@RequestBody FilterRequest request, @RequestParam Integer page) throws Exception {
+        return filmService.getFilteredFilms(request,page);
     }
 
     @GetMapping("/films/{id}")

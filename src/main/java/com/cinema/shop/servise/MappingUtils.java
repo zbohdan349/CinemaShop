@@ -5,7 +5,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public  class MappingUtils {
-    public static Object map(Object to, Object from)  {
+    public static <T,F> T map(T to, F from)  {
         try {
             Field[] m1=to.getClass().getDeclaredFields();
             for (int i = 0; i < m1.length; i++) {

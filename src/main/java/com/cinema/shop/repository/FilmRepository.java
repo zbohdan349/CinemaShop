@@ -11,8 +11,8 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.Set;
 
 @Repository
 public interface FilmRepository extends PagingAndSortingRepository<Film,Integer> {
@@ -26,10 +26,12 @@ public interface FilmRepository extends PagingAndSortingRepository<Film,Integer>
     @Query("SELECT min(buyRate) FROM Film")
     long findMinPrice();
     
-    Page<Film>findByCategoriesInAndLanguageInAndRatingIn(
-            @Param("categories")Set<Category> categories,
-            @Param("languages")Set<Language> languages,
+    Page<Film>findByCategoriesInAndLanguageInAndRatingInAndBuyRateBetween(
+            @Param("categories")List<Category> categories,
+            @Param("languages")List<Language> languages,
             @Param("ratings")List<Rating> ratings,
+            @Param("min") BigDecimal min,
+            @Param("max") BigDecimal max,
             Pageable pageable);
 
     //findByCategoriesInAndLanguageIn
