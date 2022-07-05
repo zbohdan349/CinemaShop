@@ -1,9 +1,9 @@
 package com.cinema.shop.model;
 
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Set;
-
 
 @Entity
 public class Film {
@@ -51,6 +51,8 @@ public class Film {
     )
     private Set<Actor> actors;
 
+    @Transient
+    private String imgUrl;
 
     public Film() {
     }
@@ -141,6 +143,14 @@ public class Film {
 
     public void setActors(Set<Actor> actors) {
         this.actors = actors;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 
     @Override

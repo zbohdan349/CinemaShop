@@ -29,9 +29,13 @@ public class FilmService {
     private LanguageRepository languageRepository;
     @Autowired
     private FilmRepository filmRepository;
+    @Autowired
+    private ImgService imgService;
+
     public Film getFilmById(Integer id){
       Film film = filmRepository.findById(id).orElseThrow(
               ()-> new NotFoundException("Film with ID: "+ id + " not found"));
+      film=imgService.addImgUrlToFilm(film);
       return film;
     }
     public Map<String,Object> getAllFilms(Integer page) {
@@ -78,6 +82,8 @@ public class FilmService {
 
         if(films.getTotalPages()<=page)throw new NotFoundException("Incorrect page number");
 
+        films =imgService.addImgToFilms(films);
+
         Map<String,Object> filmMap =new HashMap<>();
         filmMap.put("Count of pages",films.getTotalPages());
         filmMap.put("Count of elements", films.getTotalElements());
@@ -88,9 +94,8 @@ public class FilmService {
         Function<Film, FilmDto> change = film -> {
             FilmDto dto = new FilmDto();
 
-            return (FilmDto) MappingUtils.map(dto,film);
+            return  MappingUtils.map(dto,film);
         };
         return films.stream().map(change).collect(Collectors.toList());
     }
-
 }

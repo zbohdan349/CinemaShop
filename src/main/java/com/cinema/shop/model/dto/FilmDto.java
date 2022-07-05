@@ -25,6 +25,8 @@ public class FilmDto {
 
     private Set<Category> categories;
 
+    private String imgUrl;
+
     public FilmDto() {
     }
 
@@ -90,5 +92,13 @@ public class FilmDto {
 
     public void setCategories(Set<Category> categories) {
         this.categories = categories;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
