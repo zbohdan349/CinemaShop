@@ -1,6 +1,7 @@
 package com.cinema.shop.controller;
 
 import com.cinema.shop.model.Film;
+import com.cinema.shop.model.dto.TestDto;
 import com.cinema.shop.model.requestData.FilterRequest;
 import com.cinema.shop.servise.FilmService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,5 +64,10 @@ public class FilmController {
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
                 .body(bytes);
+    }
+    @GetMapping (value = "/test")
+    public TestDto getTest(){
+        TestDto testDto= new TestDto(1,"sdf",2000);
+        return testDto;
     }
 }
