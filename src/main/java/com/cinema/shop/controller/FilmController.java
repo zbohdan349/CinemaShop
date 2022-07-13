@@ -4,6 +4,7 @@ import com.cinema.shop.model.Film;
 import com.cinema.shop.model.dto.TestDto;
 import com.cinema.shop.model.requestData.FilterRequest;
 import com.cinema.shop.servise.FilmService;
+import com.cinema.shop.servise.ImgService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.MediaType;
@@ -22,6 +23,9 @@ public class FilmController {
 
     @Autowired
     private FilmService filmService;
+
+    @Autowired
+    private ImgService imgService;
 
     @GetMapping("/films")
     public Map<String, Object> getFilms(@RequestParam Integer page) throws Exception {
@@ -51,19 +55,12 @@ public class FilmController {
         return filmService.getFilterCategories();
     }
 
-    @GetMapping (value = "/sid")
-    public ResponseEntity<byte[]> getImage() throws IOException {
-
-        Map<String,Object> map = new HashMap<>();
-
-        var imgFile = new ClassPathResource("images/1.jpg");
-        byte[] bytes = StreamUtils.copyToByteArray(imgFile.getInputStream());
-        map.put("img",bytes);
-
+    @GetMapping (value = "/img/{id}")
+    public ResponseEntity<byte[]> getImage(@PathVariable Integer id) throws IOException {
         return ResponseEntity
                 .ok()
                 .contentType(MediaType.IMAGE_JPEG)
-                .body(bytes);
+                .body(imgService.getSingleImage(id));
     }
     @GetMapping (value = "/test")
     public TestDto getTest(){
