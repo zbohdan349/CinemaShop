@@ -61,11 +61,11 @@ public class FilmService {
     }
     public Map<String,Object> getFilterCategories(){
         Map<String,Object> filterCategoryMap =new HashMap<>();
-        filterCategoryMap.put("Languages",languageRepository.findAll());
-        filterCategoryMap.put("Rating", Rating.values());
-        filterCategoryMap.put("Categories",categoryRepository.findAll());
-        filterCategoryMap.put("Max price",filmRepository.findMaxPrice());
-        filterCategoryMap.put("Min price",filmRepository.findMinPrice());
+        filterCategoryMap.put("languages",languageRepository.findAll());
+        filterCategoryMap.put("rating", Rating.values());
+        filterCategoryMap.put("categories",categoryRepository.findAll());
+        filterCategoryMap.put("maxPrice",filmRepository.findMaxPrice());
+        filterCategoryMap.put("minPrice",filmRepository.findMinPrice());
 
         return filterCategoryMap;
     }
@@ -85,9 +85,9 @@ public class FilmService {
         films =imgService.addImgToFilms(films);
 
         Map<String,Object> filmMap =new HashMap<>();
-        filmMap.put("Count of pages",films.getTotalPages());
-        filmMap.put("Count of elements", films.getTotalElements());
-        filmMap.put("Films",convertToDto(films.toList()));
+        filmMap.put("countOfPages",films.getTotalPages());
+        filmMap.put("countOfElements", films.getTotalElements());
+        filmMap.put("films",convertToDto(films.toList()));
         return filmMap;
     }
     private List<FilmDto> convertToDto(List<Film> films){
